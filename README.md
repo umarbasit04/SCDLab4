@@ -41,6 +41,7 @@ DataTypesLab/
 ### **Lab Tasks**
 
 **1. StringPerformance**
+
 I implemented two methods to demonstrate the performance difference between String concatenation and StringBuilder:
 
 buildString(int n) - uses immutable String concatenation in a loop, which creates a new String object each iteration. This has O(n²) time complexity due to repeated copying.
@@ -48,6 +49,7 @@ buildStringBuilder(int n) - uses StringBuilder.append() which mutates a single b
 When running with n = 10000, you'll see the StringBuilder version is significantly faster. The execution time is printed for both methods so you can observe the quadratic cost of the naive String approach.
 
 **2. CourseManager**
+
 This class shows a common pitfall with Java Collections:
 
 removeCourse6Buggy() - attempts to remove an element from a List while iterating with a for-each loop, which throws a ConcurrentModificationException.
@@ -55,12 +57,14 @@ removeCourse6Fixed() - demonstrates the correct approach using Iterator.remove()
 After running the fixed version, the list should contain only ["8.03", "14.03"].
 
 **3. TreasureMap**
+
 A simple treasure tracking system using HashMap<String, Double>:
 
 updatePalmValue() - updates the value associated with the "palm" key by adding the current map size to its existing value.
 getTotalValue() - calculates the sum of all treasure values by iterating over treasures.values().
 
 **4. Zoo**
+
 Demonstrates how to create an unmodifiable view of a collection:
 
 The class wraps a mutable animal list with Collections.unmodifiableList().
@@ -68,12 +72,14 @@ When you try to call add("flamingo") on the returned list, it throws an Unsuppor
 
 ### **Homework Assignments**
 **1. StudentDirectory**
+
 A student ID to name mapping system that demonstrates defensive programming:
 
 Uses Map<Integer, String> to store student records.
 getAllIDs() returns the key set wrapped with Collections.unmodifiableSet(), preventing callers from adding or removing IDs through the returned reference while still allowing them to view the data.
 
 **2. Point**
+
 A fully immutable class implementation. The key characteristics include:
 
 All fields are final
