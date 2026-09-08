@@ -38,52 +38,65 @@ DataTypesLab/
 
 ## What Was Implemented
 
-**Guided walkthrough:**
-- `CollectionManager` (package `CollectionsLab`) — as given in the manual: safely
-  removes subjects starting with "6." using an `Iterator`, and exposes an
-  unmodifiable view via `getReadOnlySubjects()`.
+### **Lab Tasks**
 
-**Lab Tasks (4):**
-1. `StringPerformance` — `buildString(int n)` (immutable `String` concatenation) vs
-   `buildStringBuilder(int n)` (`StringBuilder.append`), with execution time measured
-   and printed for n = 10000 to observe the O(n²) cost of repeated String copying.
-2. `CourseManager` — `removeCourse6Buggy()` demonstrates `ConcurrentModificationException`
-   when removing from a `List` during a for-each loop; `removeCourse6Fixed()` fixes it
-   with `Iterator.remove()`, leaving only `["8.03", "14.03"]`.
-3. `TreasureMap` — a `HashMap<String, Double>` of treasures; `updatePalmValue()` updates
-   `"palm"` to its current value plus the map's size; `getTotalValue()` sums all values
-   via a for-each loop over `treasures.values()`.
-4. `Zoo` — wraps a mutable animal list with `Collections.unmodifiableList()`; attempting
-   `add("flamingo")` on the returned list throws `UnsupportedOperationException`.
+**1. StringPerformance**
+I implemented two methods to demonstrate the performance difference between String concatenation and StringBuilder:
 
-**Homework (2):**
-1. `StudentDirectory` — a `Map<Integer, String>` of student IDs to names;
-   `getAllIDs()` returns the key set wrapped with `Collections.unmodifiableSet()` so
-   callers cannot add/remove IDs through it.
-2. `Point` — a fully immutable class (see reflection below).
+buildString(int n) - uses immutable String concatenation in a loop, which creates a new String object each iteration. This has O(n²) time complexity due to repeated copying.
+buildStringBuilder(int n) - uses StringBuilder.append() which mutates a single buffer, giving O(n) performance.
+When running with n = 10000, you'll see the StringBuilder version is significantly faster. The execution time is printed for both methods so you can observe the quadratic cost of the naive String approach.
 
-## Reflection: Why Immutable `Point` Is Safer and Easier to Understand
-`Point` is declared `final` (so no subclass can override its behavior and add
-mutation), its `x` and `y` fields are `final` and set only once in the constructor,
-and there are no setter methods. This makes it safer from bugs because once a `Point`
-is created, its state can never change — no other part of the program can accidentally
-(or intentionally) alter its coordinates out from under code that's holding a reference
-to it, which eliminates a whole class of bugs caused by shared mutable state / pointer
-aliasing (e.g., two variables referring to the same object where one method's change
-silently affects another). It's easier to understand because a reader never has to
-trace through the codebase looking for places that might modify a `Point` — its value
-is fixed at construction, so reasoning about it is local: you only need to look at the
-constructor call to know everything about that object for its whole lifetime.
+**2. CourseManager**
+This class shows a common pitfall with Java Collections:
+
+removeCourse6Buggy() - attempts to remove an element from a List while iterating with a for-each loop, which throws a ConcurrentModificationException.
+removeCourse6Fixed() - demonstrates the correct approach using Iterator.remove(), which safely removes elements during iteration.
+After running the fixed version, the list should contain only ["8.03", "14.03"].
+
+**3. TreasureMap**
+A simple treasure tracking system using HashMap<String, Double>:
+
+updatePalmValue() - updates the value associated with the "palm" key by adding the current map size to its existing value.
+getTotalValue() - calculates the sum of all treasure values by iterating over treasures.values().
+
+**4. Zoo**
+Demonstrates how to create an unmodifiable view of a collection:
+
+The class wraps a mutable animal list with Collections.unmodifiableList().
+When you try to call add("flamingo") on the returned list, it throws an UnsupportedOperationException, protecting the original list from unwanted modifications.
+
+### **Homework Assignments**
+**1. StudentDirectory**
+A student ID to name mapping system that demonstrates defensive programming:
+
+Uses Map<Integer, String> to store student records.
+getAllIDs() returns the key set wrapped with Collections.unmodifiableSet(), preventing callers from adding or removing IDs through the returned reference while still allowing them to view the data.
+
+**2. Point**
+A fully immutable class implementation. The key characteristics include:
+
+All fields are final
+No setters or mutator methods
+The class is marked final to prevent subclassing
+Defensive copying in constructors and getters where applicable
+Thread-safe by design
 
 ## How to Run the Code
 - **In NetBeans:** open the project (File > Open Project, select the folder containing
   `pom.xml`), then right-click the project → **Run**.
-- **From the command line:** `mvn compile`
+- **From the command line:** 
+```bash 
+mvn compile
+```
 
 ## How to Run the Tests
 - **In NetBeans:** right-click the project → **Test**, or right-click an individual
   test class → **Test File**.
-- **From the command line:** `mvn test`
+- **From the command line:** 
+```bash
+mvn test
+```
 
 ## Testing
 JUnit 5 (Jupiter) was used for all test classes, covering normal cases, boundary/edge
@@ -93,7 +106,7 @@ n = 10000 to the console for manual observation, since exact timings are
 machine-dependent and aren't asserted as pass/fail.
 
 ## Author
-[Student Name] – [Registration Number]
+[Muhammad Umar Basit] – [24ABSWE0003]
 
 ## Course
 Software Construction and Development, 5th Semester Software Engineering,
